@@ -38,7 +38,7 @@ st.markdown(
     """
     <style>
     .stApp {
-        background-image: url("https://img.freepik.com/premium-photo/playfully-quirky-cow-stylish-glasses-against-bright-background_1228868-21391.jpg?semt=ais_hybrid&w=740&q=80");
+        background-image: url("");
         background-size: cover;
         background-attachment: fixed;
     }
