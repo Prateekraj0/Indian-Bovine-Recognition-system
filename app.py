@@ -2,6 +2,9 @@
 import streamlit as st
 import requests
 import os
+import gdown
+from ultralytics import YOLO
+from PIL import Image
 
 # -----------------------------------------------------------
 # PAGE CONFIG
@@ -12,6 +15,21 @@ st.set_page_config(
     page_icon="🐄"
 )
 
+# -----------------------------------------------------------
+# LOAD MODEL (FROM GOOGLE DRIVE)
+# -----------------------------------------------------------
+@st.cache_resource
+def load_model():
+    file_id = "1mVIgL7ZMO9z9Xsfd0raaD5eMRAAQbhE4"
+    url = f"https://drive.google.com/uc?id={file_id}"
+    model_path = "model.pt"
+
+    if not os.path.exists(model_path):
+        gdown.download(url, model_path, quiet=False)
+
+    return YOLO(model_path)
+
+model = load_model()
 
 # -----------------------------------------------------------
 # STYLING + BACKGROUND
@@ -19,14 +37,12 @@ st.set_page_config(
 st.markdown(
     """
     <style>
-    /* Background Image */
     .stApp {
         background-image: url("https://img.freepik.com/premium-photo/playfully-quirky-cow-stylish-glasses-against-bright-background_1228868-21391.jpg?semt=ais_hybrid&w=740&q=80");
         background-size: cover;
         background-attachment: fixed;
     }
 
-    /* Transparent overlay for content */
     .overlay {
         background: rgba(255, 255, 255, 0.80);
         padding: 30px;
@@ -34,7 +50,6 @@ st.markdown(
         backdrop-filter: blur(4px);
     }
 
-    /* Header Banner */
     .banner {
         background: linear-gradient(90deg, #0f172a, #1e293b);
         padding: 40px;
@@ -45,7 +60,6 @@ st.markdown(
         box-shadow: 0 6px 20px rgba(0,0,0,0.25);
     }
 
-    /* Cards */
     .card {
         background: rgba(255, 255, 255, 0.92);
         border-radius: 14px;
@@ -77,7 +91,7 @@ def load_class_names(path="class_names.txt"):
 CLASS_NAMES = load_class_names()
 
 # -----------------------------------------------------------
-# LOAD LOTTIE ANIMATION (cow)
+# LOAD LOTTIE ANIMATION
 # -----------------------------------------------------------
 def load_lottie_url(url: str):
     r = requests.get(url)
@@ -85,7 +99,6 @@ def load_lottie_url(url: str):
         return None
     return r.json()
 
-# Moving cow animation (black and white cow walking)
 LOTTIE_COW_URL = "https://assets4.lottiefiles.com/packages/lf20_2glqweqs.json"
 
 # -----------------------------------------------------------
@@ -122,73 +135,19 @@ st.components.v1.html(
 )
 
 # -----------------------------------------------------------
-# MAIN CONTENT (OVERVIEW SECTIONS)
+# MAIN CONTENT
 # -----------------------------------------------------------
 st.markdown("<div class='overlay'>", unsafe_allow_html=True)
 
-# ------------------- Project Overview ----------------------
+# Project Overview
 st.markdown("<div class='card'>", unsafe_allow_html=True)
 st.markdown("<div class='section-title'>📌 Project Overview</div>", unsafe_allow_html=True)
-st.write(
-    """
-    This application uses a **YOLOv8 Classification Model** to automatically identify
-    various Indian Cattle and Buffalo breeds using user-uploaded images.
-    
-    The project aims to support:
-    - Field-level livestock workers  
-    - Government breed registry systems  
-    - Precision dairy management  
-    - Automated breed documentation  
-    """
-)
+st.write("""
+This application uses a **YOLOv8 Classification Model** to identify Indian cattle & buffalo breeds.
+""")
 st.markdown("</div>", unsafe_allow_html=True)
 
-# ------------------- Technology Stack ----------------------
-st.markdown("<div class='card'>", unsafe_allow_html=True)
-st.markdown("<div class='section-title'>⚙️ Technology Stack</div>", unsafe_allow_html=True)
-st.write(
-    """
-    - **YOLOv8 Classification Model**
-    - **PyTorch / Ultralytics**
-    - **Streamlit UI**
-    - **OpenCV + PIL** for image preprocessing
-    - **Python 3.10+**
-    """
-)
-st.markdown("</div>", unsafe_allow_html=True)
-
-# ------------------- Input Features ------------------------
-st.markdown("<div class='card'>", unsafe_allow_html=True)
-st.markdown("<div class='section-title'>📥 Input Features</div>", unsafe_allow_html=True)
-st.write(
-    """
-    The system takes a **single image** of:
-    - Cattle (Bos indicus)  
-    - Buffalo (Bubalus bubalis)
-
-    Recommended guidelines:
-    - Clear side profile  
-    - Good lighting  
-    - Single animal in frame  
-    """
-)
-st.markdown("</div>", unsafe_allow_html=True)
-
-# ------------------- Key Features --------------------------
-st.markdown("<div class='card'>", unsafe_allow_html=True)
-st.markdown("<div class='section-title'>⭐ Key Features</div>", unsafe_allow_html=True)
-st.write(
-    """
-    - 🔍 **Real-time breed prediction**  
-    - 📊 **Confidence score visualization**  
-    - 🧭 **Training results + confusion matrix**  
-    - 📁 **Dataset statistics overview**  
-    - 🖼️ **Image preview before prediction**  
-    """
-)
-st.markdown("</div>", unsafe_allow_html=True)
-
-# ---------------- Supported Breeds -------------------------
+# Supported Breeds
 st.markdown("<div class='card'>", unsafe_allow_html=True)
 st.markdown("<div class='section-title'>🐃 Supported Breeds</div>", unsafe_allow_html=True)
 
@@ -196,27 +155,40 @@ if CLASS_NAMES:
     st.write(f"**Total Breeds:** {len(CLASS_NAMES)}")
     st.write(CLASS_NAMES)
 else:
-    st.error("class_names.txt not found! Please add it to project root.")
+    st.error("class_names.txt not found!")
 
 st.markdown("</div>", unsafe_allow_html=True)
 
-# ------------------- Use Cases -----------------------------
+# -----------------------------------------------------------
+# IMAGE UPLOAD + PREDICTION
+# -----------------------------------------------------------
 st.markdown("<div class='card'>", unsafe_allow_html=True)
-st.markdown("<div class='section-title'>🚜 Use Cases</div>", unsafe_allow_html=True)
-st.write(
-    """
-    - Government livestock registration systems  
-    - Breed certification for farmers  
-    - Smart dairy farm applications  
-    - Field worker mobile apps  
-    - Research on indigenous breeds  
-    - Veterinary documentation  
-    """
-)
+st.markdown("<div class='section-title'>📤 Upload Image for Prediction</div>", unsafe_allow_html=True)
+
+uploaded_file = st.file_uploader("Upload an image", type=["jpg", "jpeg", "png"])
+
+if uploaded_file:
+    image = Image.open(uploaded_file)
+    st.image(image, caption="Uploaded Image", use_column_width=True)
+
+    with st.spinner("Predicting..."):
+        results = model(image)
+
+    probs = results[0].probs
+    top1 = probs.top1
+    confidence = probs.top1conf
+
+    if CLASS_NAMES:
+        breed = CLASS_NAMES[top1]
+    else:
+        breed = f"Class {top1}"
+
+    st.success(f"🐄 Predicted Breed: **{breed}**")
+    st.info(f"Confidence: {confidence:.2f}")
+
 st.markdown("</div>", unsafe_allow_html=True)
 
-# End overlay
 st.markdown("</div>", unsafe_allow_html=True)
 
-# Footer info
-st.info(f"Loaded {len(CLASS_NAMES)} breeds from class_names.txt")
+# Footer
+st.info(f"Loaded {len(CLASS_NAMES)} breeds")
