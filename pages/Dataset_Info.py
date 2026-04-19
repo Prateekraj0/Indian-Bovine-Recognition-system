@@ -10,14 +10,14 @@ import streamlit as st
 st.markdown("""
 <style>
 .stApp {
-    background-image: url("https://t4.ftcdn.net/jpg/07/84/61/97/360_F_784619757_esWa0aZ5z82Etm3YCaA8CiaOKbaXvdFD.jpg");
+    background-image: url("");
     background-size: cover;
     background-attachment: fixed;
 }
 </style>
 """, unsafe_allow_html=True)
 
-st.markdown("### Class counts (from your earlier summary)")
+st.markdown("### Class counts ")
 
 data = {
     "Class": [
