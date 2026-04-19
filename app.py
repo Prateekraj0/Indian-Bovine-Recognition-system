@@ -55,4 +55,4 @@ else:
 # -----------------------------------------------------------
 # FOOTER
 # -----------------------------------------------------------
-st.info("Select a page from sidebar → Prediction / Training / Dataset")
+st.info("Select a page from sidebar → Prediction / Dataset")
