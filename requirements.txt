@@ -8,3 +8,4 @@ matplotlib
 pandas
 gdown
 opencv-python-headless
+python==3.10
