@@ -1,7 +1,7 @@
 streamlit
-ultralytics==8.0.100
-torch==2.0.1
-torchvision==0.15.2
+ultralytics
+torch
+torchvision
 pillow
 numpy
 matplotlib
