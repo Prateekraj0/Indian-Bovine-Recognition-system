@@ -241,9 +241,8 @@ Manav Rachna University
 
 📧 prateekraj9507@gmail.com
 
-🔗 LinkedIn: *(Add Profile Link)*
+🔗 LinkedIn: *(https://www.linkedin.com/in/prateek-raj-8177a4276/)*
 
-🔗 GitHub: *(Add GitHub Link)*
 
 ---
 
@@ -254,9 +253,5 @@ If you found this project useful, please consider giving it a ⭐ on GitHub.
 It helps others discover the project and motivates future development.
 
 ---
-
-## 📜 License
-
-This project is released under the MIT License.
 
 Feel free to use, modify, and contribute.
