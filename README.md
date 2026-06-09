@@ -126,18 +126,12 @@ https://drive.google.com/file/d/1P2YtS5ab8BYlV1-71glbobmu2aL72zO6/view?usp=shari
 - Hariana
 - Kankrej
 - Ongole
-
-*(Add remaining breeds here)*
-
-### Buffalo Breeds
-
 - Murrah
 - Jaffarabadi
 - Mehsana
 - Surti
 - Nili Ravi
-
-*(Add remaining breeds here)*
+- and 20 more
 
 ---
 
@@ -153,46 +147,6 @@ https://drive.google.com/file/d/1P2YtS5ab8BYlV1-71glbobmu2aL72zO6/view?usp=shari
 | Inference Speed | Real-Time |
 
 > Update these values if newer evaluation results are available.
-
----
-
-## 📷 Screenshots
-
-### Home Page
-
-<p align="center">
-<img src="screenshots/home.png" width="800">
-</p>
-
-### Prediction Example
-
-<p align="center">
-<img src="screenshots/prediction.png" width="800">
-</p>
-
-### Results Dashboard
-
-<p align="center">
-<img src="screenshots/results.png" width="800">
-</p>
-
-> Add screenshots inside a `screenshots/` folder.
-
----
-
-## 🎥 Demo
-
-Add a demo GIF or video here.
-
-```text
-screenshots/demo.gif
-```
-
-Example:
-
-<p align="center">
-<img src="screenshots/demo.gif" width="800">
-</p>
 
 ---
 
